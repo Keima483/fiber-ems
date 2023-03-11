@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/keima483/fiber-ems/controllers"
 	"github.com/keima483/fiber-ems/repository"
 )
@@ -26,6 +27,9 @@ func companyRoutes(app *fiber.App) {
 
 func employeeRoutes(app *fiber.App) {
 	employeeAPI := app.Group("/api/v1/employee")
+	employeeAPI.Use(jwtware.New(jwtware.Config{
+		SigningKey: []byte("secret"),
+	}))
 	employeeAPI.Post("/:id", controllers.AddEmployee)
 	employeeAPI.Get("/:id", controllers.GetEmployees)
 	employeeAPI.Put("", controllers.UpdateEmployee)
