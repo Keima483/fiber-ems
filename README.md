@@ -17,15 +17,15 @@ To run this project, you will need to have the following installed:
 ### Installing
 
 1. Clone the repository:
-```
+```bash
 git clone https://github.com/Keima483/fiber-ems.git
 ```
 2. Navigate to the project directory:
-```
+```bash
 cd fiber-ems
 ```
 3. Install the dependencies:
-```
+```bash
 go mod tidy
 ```
 4. Create a `app.env` file based on `app.env.example` and fill in your MySQL database credentials.
@@ -33,7 +33,7 @@ go mod tidy
 ### Running the Project
 
 1. Run the project:
-```
+```bash
 go run main.go
 ```
 2. Open your web browser and navigate to http://localhost:3000/. You should see a message indicating that the server is running.
