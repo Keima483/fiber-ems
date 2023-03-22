@@ -14,20 +14,20 @@ func AddEmployee(c *fiber.Ctx) error {
 	if err := c.BodyParser(employeeDetail); err != nil {
 		return err
 	}
-	id, _ := strconv.Atoi(c.Params("id"))
+	id, _ := strconv.Atoi(c.Locals("user_id").(string))
 	employee, err := service.AddEmployee(id, employeeDetail)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadGateway, err.Error())
-	} 
+	}
 	return c.JSON(employee)
 }
 
 func GetEmployees(c *fiber.Ctx) error {
-	id, _ := strconv.Atoi(c.Params("id"))
+	id, _ := strconv.Atoi(c.Locals("user_id").(string))
 	employees, err := service.GetEmployees(id)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadGateway, err.Error())
-	} 
+	}
 	return c.JSON(employees)
 }
 
@@ -35,6 +35,10 @@ func UpdateEmployee(c *fiber.Ctx) error {
 	var emp repository.Employee
 	if err := c.BodyParser(&emp); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+	id, _ := strconv.Atoi(c.Locals("user_id").(string))
+	if id != emp.CompanyId {
+		return c.Status(400).JSON(fiber.Map{"message": "Not allowed to change Data of a diffrent company"})
 	}
 	emp, err := service.UpdateEmployee(emp)
 	if err != nil {
@@ -48,6 +52,6 @@ func DeleteEmployee(c *fiber.Ctx) error {
 	_, err := service.DeleteEmployee(id)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadGateway, err.Error())
-	} 
+	}
 	return c.SendString("Successfuly deleted")
 }

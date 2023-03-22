@@ -5,13 +5,14 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/keima483/fiber-ems/models"
+	"github.com/keima483/fiber-ems/initializers"
 	"github.com/keima483/fiber-ems/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func Login(lm *models.LoginModel) (repository.Company, error) {
 	company := new(repository.Company)
-	repository.DB.Where("email = ?", lm.Email).First(&company)
+	initializers.DB.Where("email = ?", lm.Email).First(&company)
 	if company.Email == "" {
 		return repository.Company{}, errors.New("user not found")
 	}
@@ -31,7 +32,7 @@ func SignUp(cm *models.CompanyModel) (repository.Company, error) {
 		return repository.Company{}, errors.New("not able to encrypt password")
 	}
 	company.Password = string(hash)
-	repository.DB.Save(&company)
+	initializers.DB.Save(&company)
 	return company, nil
 }
 

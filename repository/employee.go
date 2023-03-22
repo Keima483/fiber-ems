@@ -7,7 +7,7 @@ import (
 
 type Employee struct {
 	gorm.Model
-	CompanyId  uint
+	CompanyId  int
 	Name       string
 	Age        int
 	Department string

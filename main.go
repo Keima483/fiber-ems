@@ -2,15 +2,23 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
-	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/keima483/fiber-ems/controllers"
-	"github.com/keima483/fiber-ems/repository"
+	"github.com/keima483/fiber-ems/initializers"
+	"github.com/keima483/fiber-ems/middleware"
 )
 
-func main() {
-	if err := repository.InitialiseDB(); err != nil {
+func init() {
+	config, err := initializers.LoadConfig(".")
+	if err != nil {
 		panic(err.Error())
 	}
+	if err := initializers.InitialiseDB(&config); err != nil {
+		panic(err.Error())
+	}
+}
+
+func main() {
+
 	app := fiber.New()
 	companyRoutes(app)
 	employeeRoutes(app)
@@ -27,11 +35,10 @@ func companyRoutes(app *fiber.App) {
 
 func employeeRoutes(app *fiber.App) {
 	employeeAPI := app.Group("/api/v1/employee")
-	employeeAPI.Use(jwtware.New(jwtware.Config{
-		SigningKey: []byte("secret"),
-	}))
-	employeeAPI.Post("/:id", controllers.AddEmployee)
-	employeeAPI.Get("/:id", controllers.GetEmployees)
+	employeeAPI.Use(middleware.VerifyJWTToken)
+
+	employeeAPI.Post("", controllers.AddEmployee)
+	employeeAPI.Get("", controllers.GetEmployees)
 	employeeAPI.Put("", controllers.UpdateEmployee)
 	employeeAPI.Delete("/:id", controllers.DeleteEmployee)
 }
