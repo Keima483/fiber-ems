@@ -49,7 +49,7 @@ go run main.go
 ### Request Examples
 
 Login
-```
+```javascript
 POST http://localhost:3000/api/v1/company/login
 Content-Type: application/json
 
@@ -60,23 +60,23 @@ Content-Type: application/json
 ```
 
 Get all employees
-```
+```javascript
 GET http://localhost:3000/api/v1/employee
 Authorization: Bearer <token>
 ```
 
 Add new employees
-```
+```javascript
 POST http://localhost:3000/api/v1/employee
 Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-    "name": "example K",
-	"age": 21,
-	"department": "SDE",
-	"email": "example@examle.com",
-	"baseSalary": 2000000
+  "name": "example K",
+  "age": 21,
+  "department": "SDE",
+  "email": "example@examle.com",
+  "baseSalary": 2000000
 }
 ```
 
