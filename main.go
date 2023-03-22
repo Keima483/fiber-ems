@@ -20,6 +20,9 @@ func init() {
 func main() {
 
 	app := fiber.New()
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("refer to https://github.com/Keima483/fiber-ems for the endpoints")
+	})
 	companyRoutes(app)
 	employeeRoutes(app)
 	if err := app.Listen(":3000"); err != nil {
